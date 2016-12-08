@@ -114,7 +114,6 @@
 				<section>
 					<div class="left">
 						<h3><code>transition</code></h3>
-						<p>Defines a sequence of animation steps that will occur when our trigger changes from one state to another</p>
 						<p>Transitions are expressed easily using the format <code>stateOne => stateTwo</code> and can be bi-directional.</p>
 					  <p>You can also transition to a "wildcard" state with * or when the element is out of the DOM with the "void" state</p>
 				    <p>Two special aliases: <code>void => *</code>code> is <code>:enter</code> and <code>* => void</code> is <code>:leave</code></p>
@@ -133,6 +132,8 @@
 						<h3><code>animate</code></h3>
 						<p>Declares an animation step that will occur during a transition</p>
 						<p>Can apply styles during the animation that are not persisted at the end</p>
+						<p>Timing is defined in a string with this format: 'duration &lt;optional delay&gt; &lt;optional easing function&gt;'</p>
+						<p>Allows for built in easing functions like 'ease-in' or 'ease-out' as well as <code>cubic-bezier</code> custom functions</p>
 						<p>Arguments:
 							<ul>
 								<li><code>timing</code> - string defining the timing of the animation and an optional easing function and an optional delay</li>
@@ -250,6 +251,30 @@ onAddButtonHover() {
 onAddButtonUnHovered() {
 	this.addButtonHoverState = '';
 }
+						</code>
+					</pre>
+				</div>
+			</section>
+
+			<section>
+				<div class="left">
+					<h2>Fading in the ship names</h2>
+					<pre>
+						<code class="typescript">
+@Component({
+  animations: [
+    trigger('flyIn', [
+      transition('void => *', [
+        style({transform: 'translateX(-100%)', opacity: 0}),
+        group([
+          animate('500ms', style({transform: 'translateX(0)'})),
+          animate('250ms 250ms', style({opacity: 1}))
+        ])
+      ]),
+      transition('* => void', animate('500ms', style({transform: 'translateX(-100%)'})))
+    ])
+  ]
+})
 						</code>
 					</pre>
 				</div>
