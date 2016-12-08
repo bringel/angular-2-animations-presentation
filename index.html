@@ -1,50 +1,197 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+	<title>Angular 2 Animations</title>
 
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/night.css">
+	<link rel="stylesheet" href="css/custom.css">
 
-		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="lib/css/zenburn.css">
 
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
-			</div>
+	<!-- Printing and PDF exports -->
+	<script>
+	var link = document.createElement( 'link' );
+	link.rel = 'stylesheet';
+	link.type = 'text/css';
+	link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+	document.getElementsByTagName( 'head' )[0].appendChild( link );
+	</script>
+</head>
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<section>
+				<h1>Angular 2 animations framework</h1>
+			</section>
+
+			<section>
+				<h2>Why should we animate things?</h2>
+				<p>Makes transitions less jarring to the user.</p>
+				<p>Adds a bit of fun to your application</p>
+			</section>
+
+			<section>
+				<h2>What about CSS animations?</h2>
+			</section>
+			<section>
+				<div class="left">
+					<p>CSS isn't very easy to read or write</p>
+					<p>Triggering animations is based on adding or removing CSS classes. Often times we use pseudo-classes like <code>:hover</code> for triggers</p>
+					<p>Animation states are defined differently based on whether you're defining a CSS transition or a CSS animation with keyframs</p>
+				</div>
+			</section>
+
+			<section>
+				<h2>So what about these Angular animations?</h2>
+				<p>Angular animations are built on the standard web animations API.</p>
+				<p>You define them in the <code>@Component</code> metadata, and they're built out of a set of composable functions (our favorite).</p>
+				<p>It's easy to define trigger states, different element states, and the transitions between them.</p>
+			</section>
+
+			<section>
+				<h3>Currently available features in the animations framework:</h3>
+				<div class="left">
+					<p>Inline styling for different element states</p>
+					<p>Keyframe animations</p>
+					<p>Auto-style calculation with an *</p>
+					<p>Easing functions and other timing features</p>
+					<p>Parallell animation groups to animate multiple properties or elements at once</p>
+					<p>Cancelling animations</p>
+				</div>
+			</section>
+
+			<section>
+				<section>
+					<h1>Let's meet the animations DSL functions</h1>
+				</section>
+				<section>
+					<div class="left">
+						<h3><code>trigger</code></h3>
+						<p>Defines a trigger property that we will add to the elements that we want animated.</p>
+						<p>We take the trigger and add a binding to the element that looks like this: <code>[@triggerName]="someState"</code> and then bind our states to it</p>
+						<p>Arguments:
+							<ul>
+								<li><code>name</code></li>
+								<li><code>animation</code> - Array of <code>AnimationMetadata</code> objects that are created by using the rest of the animations DSL functions</li>
+							</ul>
+						</p>
+					</div>
+				</section>
+
+				<section>
+					<div class="left">
+						<h3><code>state</code></h3>
+						<p>Declares one state, or set of style properties, for the element that will be animated</p>
+						<p>Defines the <strong>end state</strong> of the element. These styles are applied after the animation is finished running</p>
+						<p>The names of our states are the values that are bound to the trigger binding</p>
+						<p>Arguments:
+							<ul>
+								<li><code>stateNameExpr</code> - the string value we will use when binding to our trigger</li>
+								<li><code>styles</code> - An array of <code>AnimationStyleMetadata</code> objects that are created using other DSL functions</li>
+							</ul>
+						</p>
+					</div>
+				</section>
+
+			  <section>
+					<div class="left">
+						<h3><code>style</code></h3>
+						<p>Declares a the CSS styles for a given state using a key/value object</p>
+					  <p>Animatable properties include many common sizing and layout properties, in addition to text properties and transforms to change the position or size of elements. Full list available <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animated_properties">here</a></p>
+					  <p>Arugments:
+							<ul>
+								<li><code>tokens</code> - key/value set of property names to property values, or an array of key/value objects</li>
+							</ul>
+						</p>
+					</div>
+				</section>
+
+				<section>
+					<div class="left">
+						<h3><code>transition</code></h3>
+						<p>Defines a sequence of animation steps that will occur when our trigger changes from one state to another</p>
+						<p>Transitions are expressed easily using the format <code>stateOne => stateTwo</code> and can be bi-directional.</p>
+					  <p>You can also transition to a "wildcard" state with * or when the element is out of the DOM with the "void" state</p>
+				    <p>Two special aliases: <code>void => *</code>code> is <code>:enter</code> and <code>* => void</code> is <code>:leave</code></p>
+						<p>Can also pass in <code>style</code> calls to the second argument to define styles that are applied during the animation, but do not stick around after the animation is done</p>
+						<p>Arguments:
+							<ul>
+								<li><code>stateChangeExpr</code> - string defining the two states that are being transitioned</li>
+								<li><code>steps</code> - <code>AnimationMetadata</code> object or an array of them defining the animation or sequential animations to perform</li>
+							</ul>
+						</p>
+					</div>
+				</section>
+
+				<section>
+					<div class="left">
+						<h3><code>animate</code></h3>
+						<p>Declares an animation step that will occur during a transition</p>
+						<p>Can apply styles during the animation that are not persisted at the end</p>
+						<p>Arguments:
+							<ul>
+								<li><code>timing</code> - string defining the timing of the animation and an optional easing function and an optional delay</li>
+								<li><code>styles?</code> - Optional styles to apply during the animation or keyframes to use. If this is not passed in, the syles of the destination state are used</li>
+							</ul>
+						</p>
+					</div>
+				</section>
+
+				<section>
+					<div class="left">
+						<h3><code>keyframes</code></h3>
+						<p>Works a lot like CSS <code>@keyframes</code>. Sets styles and an offset for when to apply those styles</p>
+					  <p>Defined using the <code>style</code> function, but with an extra <code>offest</code> key to define what point in the animation to use those styles</p>
+					  <p>Arguments:
+							<ul>
+								<li><code>steps</code> - array of <code>AnimationStyleMetadata</code> objects defined with the <code>style</code> function</li>
+							</ul>
+						</p>
+					</div>
+				</section>
+
+				<section>
+					<div class="left">
+						<h3><code>group</code></h3>
+						<p>Specifies a list of animation steps that are run in parallell instead of in sequence</p>
+						<p>Can consist of either a list of <code>style</code> calls or <code>animate</code> calls</p>
+						<p>Arguments:
+							<ul>
+								<li><code>steps</code> - List of <code>AnimationMetadata</code> objects defined by calling <code>style</code> or <code>animate</code></li>
+							</ul>
+						</p>
+					</div>
+				</section>
+			</section>
+
+			<section>
+				<h1>Let's do some examples!</h1>
+			</section>
+
+
 		</div>
+	</div>
 
-		<script src="lib/js/head.min.js"></script>
-		<script src="js/reveal.js"></script>
+	<script src="lib/js/head.min.js"></script>
+	<script src="js/reveal.js"></script>
 
-		<script>
-			// More info https://github.com/hakimel/reveal.js#configuration
-			Reveal.initialize({
-				history: true,
-
-				// More info https://github.com/hakimel/reveal.js#dependencies
-				dependencies: [
-					{ src: 'plugin/markdown/marked.js' },
-					{ src: 'plugin/markdown/markdown.js' },
-					{ src: 'plugin/notes/notes.js', async: true },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
-				]
-			});
-		</script>
-	</body>
+	<script>
+	// More info https://github.com/hakimel/reveal.js#configuration
+	Reveal.initialize({
+		history: false,
+		// More info https://github.com/hakimel/reveal.js#dependencies
+		dependencies: [
+			{ src: 'plugin/markdown/marked.js' },
+			{ src: 'plugin/markdown/markdown.js' },
+			{ src: 'plugin/notes/notes.js', async: true },
+			{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+		]
+	});
+	</script>
+</body>
 </html>
