@@ -11,7 +11,7 @@
 	<link rel="stylesheet" href="css/custom.css">
 
 	<!-- Theme used for syntax highlighting of code -->
-	<link rel="stylesheet" href="lib/css/zenburn.css">
+	<link rel="stylesheet" href="lib/css/tomorrow-night-eighties.css">
 
 	<!-- Printing and PDF exports -->
 	<script>
@@ -170,10 +170,35 @@
 			</section>
 
 			<section>
+				<h2>Coming soon! (according to the angular team)</h2>
+				<p>Being able to query child elements of an element with a trigger on it to animate all the child elements</p>
+			  <p>CSS Parser. Get the styles out of the component metadata to keep it clean. If you define a CSS class or an @keyframes sequence in the component's stylesheet, you can use it with an animation</p>
+				<p>Programmatic evaluation of properties using <code>expr()</code>. (Not too many examples of this right now, but you should be able to use component properties, or even properties from a click event to dynamically calculate animation properties)
+			</section>
+			<section>
 				<h1>Let's do some examples!</h1>
 			</section>
 
-
+			<section>
+				<div class="left">
+					<h2>Flying ship names in and out</h2>
+					<pre>
+						<code class="typescript">
+@Component({
+	animations: [
+	    trigger('flyIn', [
+	      transition('void => *', [
+	        style({transform: 'translateX(-100%)'}),
+	        animate('500ms')
+	      ]),
+	      transition('* => void', animate('500ms', style({transform: 'translateX(-100%)'})))
+	    ])
+	]
+})
+						</code>
+					</pre>
+				</div>
+			</section>
 		</div>
 	</div>
 
